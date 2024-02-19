@@ -43,16 +43,16 @@ class FeedFragment @Inject constructor(
         lifecycleScope.launch {
             viewModel.postResponseStateFlow.collect {
                 when (it) {
-                    PostApiResponseType.Failure -> {
+                   is PostApiResponseType.Failure -> {
                         Toast.makeText(activity, "Api Failed", Toast.LENGTH_SHORT).show()
                         progressC.visibility = View.GONE
                     }
 
-                    PostApiResponseType.Loading -> {
+                    is PostApiResponseType.Loading -> {
                         progressC.visibility = View.VISIBLE
                     }
 
-                    PostApiResponseType.NoData -> {
+                    is PostApiResponseType.NoData -> {
                         Toast.makeText(activity, "No Data", Toast.LENGTH_SHORT).show()
                         progressC.visibility = View.GONE
                     }

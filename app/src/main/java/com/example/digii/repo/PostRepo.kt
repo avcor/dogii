@@ -1,5 +1,6 @@
 package com.example.digii.repo
 
+import android.util.Log
 import com.example.digii.data.PostApiResponseType
 import com.example.digii.data.local.PostDataDao
 import com.example.digii.data.local.model.LocalPostDataEntity
@@ -21,17 +22,21 @@ class PostRepo @Inject constructor(
     suspend fun getPostData(){
         _responseStateFlow.emit(PostApiResponseType.Loading)
 
-        val response = apiPostService.getPosts()
-
-        if(response.isSuccessful){
-            response.body()?.let {
-                _responseStateFlow.emit(PostApiResponseType.Success(it))
-            } ?: run {
-                _responseStateFlow.emit(PostApiResponseType.NoData)
+        try {
+            val response = apiPostService.getPosts()
+            if(response.isSuccessful){
+                response.body()?.let {
+                    _responseStateFlow.emit(PostApiResponseType.Success(it))
+                } ?: run {
+                    _responseStateFlow.emit(PostApiResponseType.NoData)
+                }
+            }else{
+                _responseStateFlow.emit(PostApiResponseType.Failure)
             }
-        }else{
-            _responseStateFlow.emit(PostApiResponseType.Failure)
+        }catch (e: Exception){
+           _responseStateFlow.emit(PostApiResponseType.Failure)
         }
+
     }
 
     suspend fun getAllSavedPost(){

@@ -4,6 +4,7 @@ import com.example.digii.data.remote.model.OwnerModel
 import com.google.gson.annotations.SerializedName
 
 class LocalOwnerModel(
+    var id: String? = null,
     var title: String? = null,
     var firstName: String? = null,
     var lastName: String? = null,
@@ -11,7 +12,7 @@ class LocalOwnerModel(
 ) {
     fun convertToOwnerModel(): OwnerModel {
         return OwnerModel(
-            id = "", title, firstName, lastName, picture
+            id, title, firstName, lastName, picture
         )
     }
 }

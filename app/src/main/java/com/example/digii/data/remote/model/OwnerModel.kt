@@ -22,7 +22,7 @@ data class OwnerModel(
 
     fun convertLocalOwnerModel(): LocalOwnerModel {
         return LocalOwnerModel(
-            title, firstName,lastName, picture
+            id, title, firstName,lastName, picture
         )
     }
 
