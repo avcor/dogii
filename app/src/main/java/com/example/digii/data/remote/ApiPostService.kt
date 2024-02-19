@@ -1,6 +1,6 @@
 package com.example.digii.data.remote
 
-import com.example.digii.data.model.PostModel
+import com.example.digii.data.remote.model.PostModel
 import retrofit2.Response
 import retrofit2.http.GET
 

@@ -1,4 +1,4 @@
-package com.example.digii.data.model
+package com.example.digii.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 

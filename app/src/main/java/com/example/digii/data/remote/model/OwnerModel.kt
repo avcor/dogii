@@ -1,7 +1,8 @@
-package com.example.digii.data.model
+package com.example.digii.data.remote.model
 
 import android.os.Parcelable
 import com.example.digii.capitalizeFirstWord
+import com.example.digii.data.local.model.LocalOwnerModel
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -18,4 +19,11 @@ data class OwnerModel(
     fun getAuthorFullName(): String {
         return "${title?.capitalizeFirstWord()} ${firstName} ${lastName}"
     }
+
+    fun convertLocalOwnerModel(): LocalOwnerModel {
+        return LocalOwnerModel(
+            title, firstName,lastName, picture
+        )
+    }
+
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.digii.data.PostApiResponseType
+import com.example.digii.data.local.model.LocalPostDataEntity
 import com.example.digii.repo.PostRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,18 +18,30 @@ import javax.inject.Inject
 class MainActViewModel @Inject constructor(
     private val postRepo: PostRepo
 ) : ViewModel() {
-    val TAG = "PostViewModel"
+    private val TAG = "PostViewModel"
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.d(TAG, " exception in dashboard VM ${throwable} ${coroutineContext}")
+    }
 
     var postResponseStateFlow: StateFlow<PostApiResponseType> = MutableStateFlow<PostApiResponseType>(PostApiResponseType.Loading)
         get() = postRepo.responsePostStateFlow
 
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        Log.d(TAG, " exception in dashboard VM ${throwable} ${coroutineContext}")
-    }
+    var savedPostStateFlow: StateFlow<List<LocalPostDataEntity>> = MutableStateFlow(listOf())
+        get() = postRepo.savedPostStateFlow
+
     init {
        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
            postRepo.getPostData()
+           postRepo.getAllSavedPost()
        }
+    }
+
+    suspend fun deleteSavedPost(post :  LocalPostDataEntity){
+        postRepo.deleteSavedPost(post)
+    }
+
+    suspend fun savePost(post: LocalPostDataEntity){
+        postRepo.savePost(post)
     }
 
 }

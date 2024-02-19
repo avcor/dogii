@@ -6,23 +6,22 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.digii.data.remote.model.OwnerModel
+import com.example.digii.data.remote.model.PostDataModel
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "posts")
-@Parcelize
-data class LocalPostDataModel(
+class LocalPostDataEntity(
 
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    @PrimaryKey
+    @ColumnInfo(name = "postId")
+    var postId: String = "",
 
     @ColumnInfo(name = "image")
     var image: String? = null,
 
     @ColumnInfo(name = "likes")
     var likes: Int? = null,
-
-    @ColumnInfo(name = "tags")
-    var tags: List<String> = emptyList(),
 
     @ColumnInfo(name = "text")
     var text: String? = null,
@@ -31,6 +30,11 @@ data class LocalPostDataModel(
     var publishDate: String? = null,
 
     @Embedded
-    var owner: OwnerModel = OwnerModel()
-
-) : Parcelable
+    var owner: LocalOwnerModel? = LocalOwnerModel()
+){
+    fun convertToPostDataModel(): PostDataModel {
+        return PostDataModel(
+            postId, image, likes, arrayListOf() , text, publishDate, owner?.convertToOwnerModel()
+        )
+    }
+}

@@ -1,6 +1,6 @@
 package com.example.digii.data
 
-import com.example.digii.data.model.PostModel
+import com.example.digii.data.remote.model.PostModel
 
 sealed interface PostApiResponseType{
     data class Success(val responseData: PostModel): PostApiResponseType
