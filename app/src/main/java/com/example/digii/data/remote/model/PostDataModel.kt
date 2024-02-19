@@ -1,7 +1,13 @@
 package com.example.digii.data.model
 
+import android.os.Build
+import android.os.Parcelable
+import androidx.annotation.RequiresApi
+import com.example.digii.militaryToDayTime
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class PostDataModel(
 
     @SerializedName("id") var id: String? = null,
@@ -12,4 +18,9 @@ data class PostDataModel(
     @SerializedName("publishDate") var publishDate: String? = null,
     @SerializedName("owner") var owner: OwnerModel? = OwnerModel()
 
-)
+) : Parcelable {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getMilitaryToDayDate(): String {
+        return publishDate.militaryToDayTime()
+    }
+}
